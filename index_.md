@@ -19,8 +19,8 @@ Here is my [research statement](./assets/pdf/Research_Statement.pdf).
 
 | Semester | Course Name |
 |---|---|
-| Fall 2023 | [Selected Topics in Algebraic Topology](./assets/2022Fall/index.html) |
-| Spring 2022 | [Selected Topics in Algebraic Topology](./assets/2023Spring/index.html) |
+| Fall 2023 | [Selected Topics in Algebraic Topology](./assets/2023Fall/index.html) |
+| Spring 2022 | [Selected Topics in Algebraic Topology](./assets/2022Spring/index.html) |
 
 ### University of Chicago.
 

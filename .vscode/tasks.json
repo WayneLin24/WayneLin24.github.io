@@ -22,9 +22,9 @@
             "problemMatcher": []
         },
         {
-            "label": "Compile /SelectedTopicsInAlgebraicTopology/index_.md",
+            "label": "Compile Courses",
             "type": "shell",
-            "command": "python task.py -f ./SelectedTopicsInAlgebraicTopology/index_.md -o ./SelectedTopicsInAlgebraicTopology/index.html -t Teaching",
+            "command": "python task.py -f ./assets/2022Spring/index_.md -o ./assets/2022Spring/index.html -t Teaching && python task.py -f ./assets/2023Fall/index_.md -o ./assets/2023Fall/index.html -t Teaching",
             "problemMatcher": []
         }
     ]
