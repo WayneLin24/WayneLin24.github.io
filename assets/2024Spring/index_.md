@@ -17,4 +17,6 @@
     * 平时作业 40%
     * 期末考试 60%
 * 作业 (每单周周四上课交)
-    * [作业 (Week 3)](./HomeworkWeek3.pdf)
+    * [作业 (Week 3)](./Week3.pdf)
+    * [作业 (Week 5)](./Week5.pdf)
+    * [作业 (Week 7)](./Week7.pdf)
