@@ -19579,7 +19579,7 @@ globalThis.DATA_JSON_tmf_C2_Ceta_Cnu = {
    "y": 11.036473822626947
   },
   {
-   "b": [2],
+   "b": [1, 2],
    "c": "black",
    "d": null,
    "i0": 691,
@@ -19590,7 +19590,7 @@ globalThis.DATA_JSON_tmf_C2_Ceta_Cnu = {
    "y": 11.935536462692875
   },
   {
-   "b": [1],
+   "b": [2],
    "c": "black",
    "d": null,
    "i0": 691,
@@ -23880,7 +23880,7 @@ globalThis.DATA_JSON_tmf_C2_Ceta_Cnu = {
    "y": 13.033089386561084
   },
   {
-   "b": [0, 2],
+   "b": [2, 3],
    "c": "black",
    "d": null,
    "i0": 1082,
@@ -23891,7 +23891,7 @@ globalThis.DATA_JSON_tmf_C2_Ceta_Cnu = {
    "y": 13.911074763381553
   },
   {
-   "b": [2, 3],
+   "b": [0, 3],
    "c": "black",
    "d": null,
    "i0": 1082,
