@@ -663,6 +663,10 @@ function on_click_about() {
     alert("Author: Weinan Lin");
 }
 
+function on_time() {
+    alert(`Time: ${DATA_JSON.time}`);
+}
+
 function updateVisibility() {
     if (MODE == "map") {
         var sep_right = DATA_JSON.sep_right;
