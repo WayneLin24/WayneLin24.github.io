@@ -1,8 +1,9 @@
 # Spectral sequences
-## Machine generated data
-### Adams Spectral sequence
-S0 (t<=261) [plot](plot.html?diagram=public&data=S0) [arxiv](https://arxiv.org/abs/2304.00506) [csv](https://www.zenodo.org/record/7865526)
-
-[tmf](plot.html?diagram=public&data=tmf), [tmf∧C2](plot.html?diagram=public&data=tmf_C2), [tmf∧Ceta](plot.html?diagram=public&data=tmf_Ceta), [tmf∧Cnu](plot.html?diagram=public&data=tmf_Cnu)<br>
-
-[S0 --> tmf](plot.html?diagram=public&data=S0__tmf) (inside the webpage hold shift and click to see maps),<br>
+* [mix](./mix.html)
+* [mix1](./mix1.html)
+* [mix2](./mix2.html)
+* [mix3](./mix3.html)
+* [auto](./auto.html)
+* [程序`Adams`使用指南](./manual_Adams.html)
+* [程序`ss`使用指南](./manual_ss.html)
+* [本网页使用指南](./manual_html.html)
