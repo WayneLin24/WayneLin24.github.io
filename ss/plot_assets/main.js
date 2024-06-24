@@ -1,10 +1,12 @@
 /* created by Weinan Lin */
 
+var STATE = "start";
+
 /************************************************************************
  *                          config variables
  ***********************************************************************/
-const urlParams = new URLSearchParams(window.location.search);
-const DATA_NAME = urlParams.get("data") || "S0";
+const URL_PARAMS = new URLSearchParams(window.location.search);
+const DATA_NAME = URL_PARAMS.get("data") || "S0";
 const COUNT_MAPS = DATA_NAME.split("__").length - 1;
 const MODE = ["ss", "map", "cofseq"][COUNT_MAPS];
 var DATA_JSON = {};
@@ -82,6 +84,8 @@ const div_menu_style = document.getElementById("div_menu").style;
 const rect_separator = document.getElementById("rect_separator");
 const rect_second_ss = document.getElementById("rect_second_ss");
 const select_page = document.getElementById("select_page");
+
+const rect_shade = document.getElementById("rect_shade");
 
 /* Resize window */
 function windowResize() {
@@ -275,6 +279,17 @@ function latexMon(mon, data_json) {
     }
 }
 
+function mon_no_h012(mon, data_json) {
+    const gen_names = data_json["gen_names"];
+    for (let i = 0; i < mon.length - 1; i += 2) {
+        if (gen_names[mon[i]] == "h_0" || gen_names[mon[i]] == "h_1" || gen_names[mon[i]] == "h_2") {
+            if (mon[i + 1] > 1 || mon.length > 2)
+                return false;
+        }
+    }
+    return true;
+}
+
 function getJsonForBullet(bullet) {
     if (bullet.classList.contains("cw")) {
         return DATA_JSON;
@@ -312,6 +327,18 @@ function latexBullet(bullet) {
         str_base += latexMon(basis_json[offset_X + parseInt(bullet_json["b"][i])], data_json);
     }
     return str_base;
+}
+
+function latexBullet_no_h012(bullet) {
+    const data_json = getJsonForBullet(bullet);
+    const bullet_json = data_json["bullets"][bullet.dataset.i];
+    if (bullet_json > 1)
+        return "";
+    const basis_json = data_json["basis"];
+    const offset_X = parseInt(bullet_json["i0"]);
+    if (!mon_no_h012(basis_json[offset_X + parseInt(bullet_json["b"][0])], data_json))
+        return "";
+    return latexMon(basis_json[offset_X + parseInt(bullet_json["b"][0])], data_json);
 }
 
 function replaceAll(str, find, replace) {
@@ -387,8 +414,8 @@ var prevPinchScale = null;
 var timerClearCache = null;
 
 function getDistPts() {
-    let p1Screen = new Vector(pointerCache[0].offsetX, pointerCache[0].offsetY);
-    let p2Screen = new Vector(pointerCache[1].offsetX, pointerCache[1].offsetY);
+    let p1Screen = new Vector(pointerCache[0].clientX, pointerCache[0].clientY);
+    let p2Screen = new Vector(pointerCache[1].clientX, pointerCache[1].clientY);
     return p1Screen.dist(p2Screen);
 }
 
@@ -398,54 +425,77 @@ function restartTimer() {
 }
 
 function on_pointerdown(event) {
-    if (event.button === 0) {
-        div_menu_style.visibility = "hidden";
-        div_binfo_style.visibility = "hidden";
-        if (event.shiftKey && "sep_right" in DATA_JSON) {
-            DATA_JSON.sep_right = Math.ceil(camera.svg2world_v2(event.offsetX, 0).x);
-            updateVisibility();
-            updateAxisLabels();
-        }
+    if (STATE === "start") {
+        if (event.button === 0) {
+            div_menu_style.visibility = "hidden";
+            div_binfo_style.visibility = "hidden";
+            if (event.shiftKey && "sep_right" in DATA_JSON) {
+                DATA_JSON.sep_right = Math.ceil(camera.svg2world_v2(event.clientX, 0).x);
+                updateVisibility();
+                updateAxisLabels();
+            }
 
-        /* This event is cached to support 2-finger gestures */
-        pointerCache.push(event);
+            /* This event is cached to support 2-finger gestures */
+            pointerCache.push(event);
 
-        if (pointerCache.length === 1) {
-            prevPt = new Vector(event.offsetX, event.offsetY);
+            if (pointerCache.length === 1) {
+                prevPt = new Vector(event.clientX, event.clientY);
+            }
+            else if (pointerCache.length === 2) {
+                prevPtsDist = getDistPts();
+            }
+            restartTimer();
         }
-        else if (pointerCache.length === 2) {
-            prevPtsDist = getDistPts();
+    }
+    else if (STATE === "screenshot_start") {
+        if (event.button === 0) {
+            STATE = "screenshot_first_pt";
+            FIRST_PT = new Vector(event.clientX, event.clientY);
+            FIRST_PT = camera.svg2world(camera.flip(FIRST_PT));
         }
-        restartTimer();
     }
 }
 
 /* This function implements a 2-pointer horizontal pinch/zoom gesture. */
 function on_pointermove(event) {
-    /* Check if this event is in the cache and update it */
-    let index = 0;
-    for (; index < pointerCache.length; index++) {
-        if (event.pointerId === pointerCache[index].pointerId) {
-            pointerCache[index] = event;
-            break;
+    if (STATE === "start") {
+        /* Check if this event is in the cache and update it */
+        let index = 0;
+        for (; index < pointerCache.length; index++) {
+            if (event.pointerId === pointerCache[index].pointerId) {
+                pointerCache[index] = event;
+                break;
+            }
+        }
+
+        /* Move only when the only one down pointer moves */
+        if (pointerCache.length === 1 && index < pointerCache.length) {
+            let curPt = new Vector(event.clientX, event.clientY);
+            let deltaScreen = curPt.sub(prevPt);
+            camera.translate(new Vector(deltaScreen.x, -deltaScreen.y));
+            prevPt = curPt;
+        }
+
+        /* If two pointers are down, check for pinch gestures */
+        if (pointerCache.length === 2 && index < pointerCache.length) {
+            let p1Svg = camera.flip(new Vector(pointerCache[0].clientX, pointerCache[0].clientY));
+            let p2Svg = camera.flip(new Vector(pointerCache[1].clientX, pointerCache[1].clientY));
+            let curDist = p1Svg.dist(p2Svg);
+            camera.zoom(index === 0 ? p2Svg : p1Svg, curDist / prevPtsDist);
+            prevPtsDist = curDist;
         }
     }
-
-    /* Move only when the only one down pointer moves */
-    if (pointerCache.length === 1 && index < pointerCache.length) {
-        let curPt = new Vector(event.offsetX, event.offsetY);
-        let deltaScreen = curPt.sub(prevPt);
-        camera.translate(new Vector(deltaScreen.x, -deltaScreen.y));
-        prevPt = curPt;
-    }
-
-    /* If two pointers are down, check for pinch gestures */
-    if (pointerCache.length === 2 && index < pointerCache.length) {
-        let p1Svg = camera.flip(new Vector(pointerCache[0].offsetX, pointerCache[0].offsetY));
-        let p2Svg = camera.flip(new Vector(pointerCache[1].offsetX, pointerCache[1].offsetY));
-        let curDist = p1Svg.dist(p2Svg);
-        camera.zoom(index === 0 ? p2Svg : p1Svg, curDist / prevPtsDist);
-        prevPtsDist = curDist;
+    else if (STATE === "screenshot_first_pt") {
+        SECOND_PT = new Vector(event.clientX, event.clientY);
+        SECOND_PT = camera.svg2world(camera.flip(SECOND_PT));
+        SCREENSHOT_X_MIN = Math.min(FIRST_PT.x, SECOND_PT.x);
+        SCREENSHOT_Y_MIN = Math.min(FIRST_PT.y, SECOND_PT.y);
+        SCREENSHOT_X_MAX = Math.max(FIRST_PT.x, SECOND_PT.x);
+        SCREENSHOT_Y_MAX = Math.max(FIRST_PT.y, SECOND_PT.y);
+        rect_shade.setAttribute("x", SCREENSHOT_X_MIN);
+        rect_shade.setAttribute("y", SCREENSHOT_Y_MIN);
+        rect_shade.setAttribute("width", Math.abs(SECOND_PT.x - FIRST_PT.x));
+        rect_shade.setAttribute("height", Math.abs(SECOND_PT.y - FIRST_PT.y));
     }
 }
 
@@ -501,73 +551,80 @@ function select_bullet(bullet) {
 }
 
 function on_pointerup(event) {
-    /* Remove this pointer from the cache */
-    if (event.button === 0) {
-        if (removeEvent(event.pointerId)) {
-            if (pointerCache.length === 0) {
-                prevPt = null;
+    if (STATE === "start") {
+        /* Remove this pointer from the cache */
+        if (event.button === 0) {
+            if (removeEvent(event.pointerId)) {
+                if (pointerCache.length === 0) {
+                    prevPt = null;
+                }
+                else if (pointerCache.length === 1) {
+                    prevPt = new Vector(pointerCache[0].clientX, pointerCache[0].clientY);
+                }
+                else if (pointerCache.length === 2) {
+                    prevPtsDist = getDistPts();
+                }
             }
-            else if (pointerCache.length === 1) {
-                prevPt = new Vector(pointerCache[0].offsetX, pointerCache[0].offsetY);
-            }
-            else if (pointerCache.length === 2) {
-                prevPtsDist = getDistPts();
-            }
-        }
 
-        const bullet = event.target;
-        if (bullet == bullet_selected) {
-            /* Info pane */
-            const posX = event.clientX;
-            const posY = window.innerHeight - event.clientY;
+            const bullet = event.target;
+            if (bullet == bullet_selected) {
+                /* Info pane */
+                const posX = event.clientX;
+                const posY = window.innerHeight - event.clientY;
 
-            div_binfo_style.left = posX + "px";
-            div_binfo_style.bottom = posY + "px";
-            div_binfo_style.visibility = "visible";
+                div_binfo_style.left = posX + "px";
+                div_binfo_style.bottom = posY + "px";
+                div_binfo_style.visibility = "visible";
 
-            const bullet_json = getJsonForBullet(bullet)["bullets"][bullet.dataset.i];
+                const bullet_json = getJsonForBullet(bullet)["bullets"][bullet.dataset.i];
 
-            p_deg.innerHTML = `Deg: (${getAxisNumber(Math.round(bullet.getAttribute("cx")))},${Math.round(bullet.getAttribute("cy"))})`;
-            p_base.innerHTML = `Basis: ${bullet_json['b']}`;
-            const str_base = latexBullet(bullet);
-            const tex_base = katex.renderToString(str_base, { throwOnError: false });
-            p_latex.innerHTML = `LaTeX: ${tex_base}`;
+                p_deg.innerHTML = `Deg: (${getAxisNumber(Math.round(bullet.getAttribute("cx")))},${Math.round(bullet.getAttribute("cy"))})`;
+                p_base.innerHTML = `Basis: ${bullet_json['b']}`;
+                const str_base = latexBullet(bullet);
+                const tex_base = katex.renderToString(str_base, { throwOnError: false });
+                p_latex.innerHTML = `LaTeX: ${tex_base}`;
 
-            const level = bullet_json['l'];
-            if (level === 5000) { p_diff.innerHTML = `Permanent`; }
-            else if (level === 10000 - CONFIG.R_PERM) { p_diff.innerHTML = `Permanent`; }
-            else if (level > 10000 - CONFIG.R_PERM) {
-                const r = 10000 - level;
-                let str_diff = `d_{${r}}(\\mathrm{this})=(${bullet_json['d']})`;
-                str_diff = str_diff.replace('null', '?');
-                p_diff.innerHTML = katex.renderToString(str_diff, { throwOnError: false });
-            }
-            else {
-                const r = level;
-                let str_diff = `d_{${r}}(${bullet_json['d']})=\\mathrm{this}`;
-                str_diff = str_diff.replace('null', '?');
-                p_diff.innerHTML = katex.renderToString(str_diff, { throwOnError: false });
-            }
-        }
-        else if (bullet.classList.contains("b")) {
-            if (bullet_selected !== null) {
-                if (bullet_selected.getAttribute("stroke-width") !== null) {
-                    bullet_selected.setAttribute("fill", "transparent");
+                const level = bullet_json['l'];
+                if (level === 5000) { p_diff.innerHTML = `Permanent`; }
+                else if (level === 10000 - CONFIG.R_PERM) { p_diff.innerHTML = `Permanent`; }
+                else if (level > 10000 - CONFIG.R_PERM) {
+                    const r = 10000 - level;
+                    let str_diff = `d_{${r}}(\\mathrm{this})=(${bullet_json['d']})`;
+                    str_diff = str_diff.replace('null', '?');
+                    p_diff.innerHTML = katex.renderToString(str_diff, { throwOnError: false });
                 }
                 else {
-                    bullet_selected.removeAttribute("fill");
+                    const r = level;
+                    let str_diff = `d_{${r}}(${bullet_json['d']})=\\mathrm{this}`;
+                    str_diff = str_diff.replace('null', '?');
+                    p_diff.innerHTML = katex.renderToString(str_diff, { throwOnError: false });
                 }
-                bullet_selected = null;
             }
-            select_bullet(bullet);
-        }
+            else if (bullet.classList.contains("b")) {
+                if (bullet_selected !== null) {
+                    if (bullet_selected.getAttribute("stroke-width") !== null) {
+                        bullet_selected.setAttribute("fill", "transparent");
+                    }
+                    else {
+                        bullet_selected.removeAttribute("fill");
+                    }
+                    bullet_selected = null;
+                }
+                select_bullet(bullet);
+            }
 
-        restartTimer();
+            restartTimer();
+        }
+    }
+    else if (STATE === "screenshot_first_pt") {
+        STATE = "start";
+        rect_shade.setAttribute("x", "-10000");
+        take_screenshot();
     }
 }
 
 function on_wheel(event) {
-    let pivotScreen = new Vector(event.offsetX, event.offsetY);
+    let pivotScreen = new Vector(event.clientX, event.clientY);
     let pivotSvg = camera.flip(pivotScreen);
     camera.zoom(pivotSvg, event.deltaY < 0 ? CONFIG.camera_zoom_rate : 1 / CONFIG.camera_zoom_rate);
     event.preventDefault();
@@ -631,7 +688,6 @@ function on_pointerenter_bullet(event) {
     circle_mouseon.setAttribute("r", Number(tgt.getAttribute("r")) * 1.3);
 }
 function on_pointerleave_bullet(event) {
-    let tgt = event.target;
     circle_mouseon.setAttribute("cx", "-1000");
 }
 
@@ -659,12 +715,142 @@ function on_contextmenu(event) {
     }
 }
 
-function on_click_about() {
-    alert("Author: Weinan Lin");
+function RoundCoor(x) {
+    return Math.round(x * 1000) / 1000;
+}
+
+function Convert2TikzColor(color) {
+    if (color === "DeepSkyBlue") {
+        return "cyan";
+    }
+    else if (color === "green") {
+        return "Green";
+    }
+    return color;
+}
+
+function on_screenshot() {
+    STATE = "screenshot_start";
+    document.body.style.cursor = "crosshair";
+}
+
+function in_screenshot(x, y) {
+    return x >= SCREENSHOT_X_MIN && x <= SCREENSHOT_X_MAX && y >= SCREENSHOT_Y_MIN && y <= SCREENSHOT_Y_MAX;
+}
+
+function RoundToHalf(x) {
+    return Math.floor(x) + 0.5;
+}
+
+function CountTrailingZeros(n)
+{
+    let bit = n.toString(2);
+    bit = bit.split("");
+    bit = bit.reverse();
+    let num = 0;
+    for (let i = 0; i < 64; i++) {
+        if (bit[i] == '0')
+            num++;
+        else
+            break;
+    }
+    return num;
+}
+
+function take_screenshot() {
+    let tex_string = "\\begin{figure}\n\\centering\n\\scalebox{1}{\\begin{tikzpicture}[line width=0.1pt]\n";
+    tex_string += `\\draw (${RoundToHalf(SCREENSHOT_X_MIN)},${RoundToHalf(SCREENSHOT_Y_MIN)}) rectangle (${RoundToHalf(SCREENSHOT_X_MAX)},${RoundToHalf(SCREENSHOT_Y_MAX)});\n`
+    for (let x = Math.ceil(SCREENSHOT_X_MIN); x < Math.ceil(SCREENSHOT_X_MAX); x++) {
+        tex_string += `\\node at (${x},${Math.floor(SCREENSHOT_Y_MIN)}) {$${x}$};\n`;
+    }
+    for (let y = Math.ceil(SCREENSHOT_Y_MIN); y < Math.ceil(SCREENSHOT_Y_MAX); y++) {
+        tex_string += `\\node at (${Math.floor(SCREENSHOT_X_MIN)},${y}) {$${y}$};\n`;
+    }
+    tex_string += `\\begin{scope}\n\\clip (${RoundToHalf(SCREENSHOT_X_MIN)},${RoundToHalf(SCREENSHOT_Y_MIN)}) rectangle (${RoundToHalf(SCREENSHOT_X_MAX)},${RoundToHalf(SCREENSHOT_Y_MAX)});\n`
+    for (let x = Math.ceil(SCREENSHOT_X_MIN); x < Math.ceil(SCREENSHOT_X_MAX) - 1; x++) {
+        tex_string += `\\draw[black!10] (${x + 0.5},${RoundToHalf(SCREENSHOT_Y_MIN)}) -- (${x + 0.5},${RoundToHalf(SCREENSHOT_Y_MAX)});\n`;
+    }
+    for (let y = Math.ceil(SCREENSHOT_Y_MIN); y < Math.ceil(SCREENSHOT_Y_MAX) - 1; y++) {
+        tex_string += `\\draw[black!10] (${RoundToHalf(SCREENSHOT_X_MIN)},${y + 0.5}) -- (${RoundToHalf(SCREENSHOT_X_MAX)},${y + 0.5});\n`;
+    }
+    
+    
+    for (const ele of document.getElementsByClassName("p")) {
+        const classList = ele.classList;
+        if (classList.contains("b") || classList.contains("baux")) {
+            // console.log(ele);////
+            if ((!classList.contains("cw1") || Math.round(ele.getAttribute("cx")) >= sep_right) && (!classList.contains("cw2") || Math.round(ele.getAttribute("cx")) <= sep_left)) {
+                const data_json = getJsonForBullet(ele);
+                const bullet_json = data_json["bullets"][ele.dataset.i];
+                // console.log(bullet_json);////
+                if (bullet_json['p'] >= CONFIG_DYNAMIC.page) {
+                    let ploted = false;
+                    if (bullet_json['p'] == CONFIG.R_PERM && bullet_json['d'] !== null) {
+                        // if (bullet_json['l'] > 10000 - CONFIG_DYNAMIC.page) {
+                        //     tex_string += `  \\fill[${bullet_json['c']}] (${RoundCoor(ele.getAttribute("cx"))},${RoundCoor(ele.getAttribute("cy"))}) circle (${RoundCoor(ele.getAttribute("r") * 0.8)});\n`;
+                        //     ploted = true;
+                        // }
+                    }
+                    if (!ploted && in_screenshot(ele.getAttribute("cx"), ele.getAttribute("cy"))) {
+                        bullet_latex = latexBullet_no_h012(ele);
+                        if (bullet_latex !== "") {
+                            bullet_latex = ` node[below] {\\scalebox{1}{$${bullet_latex}$}}`
+                        }
+                        tex_string += `  \\fill (${RoundCoor(ele.getAttribute("cx"))},${RoundCoor(ele.getAttribute("cy"))}) circle (${RoundCoor(ele.getAttribute("r") * 0.8)})${bullet_latex};\n`;
+                    }
+                }
+            }
+        }
+        else {
+            if (!classList.contains("cw1") || (Math.round(ele.getAttribute("x1")) >= sep_right && Math.round(ele.getAttribute("x2")) >= sep_right)) {
+                if (!classList.contains("cw2") || (Math.round(ele.getAttribute("x1")) <= sep_left && Math.round(ele.getAttribute("x2")) <= sep_left)) {
+                    if (classList.contains("sl")) {
+                        if (ele.dataset.page >= CONFIG_DYNAMIC.page) {
+                            let x1 = ele.getAttribute("x1"), y1 = ele.getAttribute("y1"), x2 = ele.getAttribute("x2"), y2 = ele.getAttribute("y2");
+                            if (in_screenshot(x1, y1) || in_screenshot(x2, y2)) {
+                                tex_string += `  \\draw (${RoundCoor(x1)},${RoundCoor(y1)}) -- (${RoundCoor(x2)},${RoundCoor(y2)});\n`;
+                            }
+                        }
+                    }
+                    // else if (classList.contains("ml")) {
+                    //     if (Math.round(ele.getAttribute("x1")) == sep_right && ele.dataset.page >= CONFIG_DYNAMIC.page) {
+                    //         ele.removeAttribute("style");
+                    //     }
+                    // }
+                    else if (classList.contains("dl")) {
+                        if (ele.dataset.page == CONFIG_DYNAMIC.page || (CONFIG_DYNAMIC.showLines === "All diff" && ele.dataset.page > CONFIG_DYNAMIC.page)) {
+                            let x1 = ele.getAttribute("x1"), y1 = ele.getAttribute("y1"), x2 = ele.getAttribute("x2"), y2 = ele.getAttribute("y2");
+                            if (in_screenshot(x1, y1) || in_screenshot(x2, y2)) {
+                                tex_string += `  \\draw[${Convert2TikzColor(ele.parentElement.getAttribute("stroke"))}] (${RoundCoor(x1)},${RoundCoor(y1)}) -- (${RoundCoor(x2)},${RoundCoor(y2)});\n`;
+                            }
+                        }
+                    }
+                    // else if (classList.contains("nd")) {
+                    //     if (ele.dataset.r <= CONFIG_DYNAMIC.dashedLevel && (CONFIG_DYNAMIC.showLines === "All diff" || ele.dataset.r <= CONFIG_DYNAMIC.page)) {
+                    //         ele.removeAttribute("style");
+                    //     }
+                    // }
+                    // else if (classList.contains("lb")) { // labels
+                    //     if (ele.dataset.page >= CONFIG_DYNAMIC.page) {
+                    //         ele.removeAttribute("style");
+                    //     }
+                    // }
+                }
+            }
+        }
+    }
+    tex_string += "\\end{scope}\\end{tikzpicture}}\n\\caption{figurename}\n\\end{figure}\n";
+    navigator.clipboard.writeText(tex_string);
+    alert(`Tikz code is copied!`);
+    document.body.style.cursor = "default";
 }
 
 function on_time() {
     alert(`Time: ${DATA_JSON.time}`);
+}
+
+function on_about() {
+    alert("Author: Weinan Lin");
 }
 
 function updateVisibility() {
@@ -808,6 +994,11 @@ function initHandlers() {
 /************************************************************************
  *                         Plot svg by json
  ***********************************************************************/
+/* class
+    * p: plot
+    * b: bullet
+    * bp: bullet in cofseq_gp indicating more permanent cycles
+*/
 
 function loadPlot(data_json) {
     const xshift = "shift" in data_json ? data_json.shift : 0;
@@ -957,23 +1148,23 @@ function loadScript(path, on_load) {
 }
 
 function processParams() {
-    const dir = urlParams.get("diagram") || "mix";
+    const dir = URL_PARAMS.get("diagram") || "mix";
     const data = DATA_NAME;
     document.getElementById("title").innerHTML = `${data}: AdamsSS`;
 
     /* Adjust camera */
-    if (urlParams.get("scale") !== null) {
-        const pivot_svg = camera.world2svg(new Vector(urlParams.get("x"), urlParams.get("y")));
-        const scale = Number(urlParams.get("scale"));
+    if (URL_PARAMS.get("scale") !== null) {
+        const pivot_svg = camera.world2svg(new Vector(URL_PARAMS.get("x"), URL_PARAMS.get("y")));
+        const scale = Number(URL_PARAMS.get("scale"));
         camera.zoom(pivot_svg, scale);
     }
-    if (urlParams.get("x") !== null) {
-        const wx = Number(urlParams.get("x")) + (data.includes("__") ? 1 : 0);
+    if (URL_PARAMS.get("x") !== null) {
+        const wx = Number(URL_PARAMS.get("x")) + (data.includes("__") ? 1 : 0);
         const pivot_svg = camera.world2svg(new Vector(wx, 0));
         camera.translate(new Vector(CONFIG.margin + (window.innerWidth - CONFIG.margin) / 2 - pivot_svg.x, 0));
     }
-    if (urlParams.get("y") !== null) {
-        const wy = Number(urlParams.get("y"));
+    if (URL_PARAMS.get("y") !== null) {
+        const wy = Number(URL_PARAMS.get("y"));
         const pivot_svg = camera.world2svg(new Vector(0, wy));
         camera.translate(new Vector(0, CONFIG.margin + (window.innerHeight - CONFIG.margin) / 2 - pivot_svg.y));
     }

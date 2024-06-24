@@ -6,25 +6,13 @@
         {
             "label": "Compile /index_.md",
             "type": "shell",
-            "command": "python task.py -f index_.md -o index.html -t \"Weinan Lin | Home\"",
-            "problemMatcher": []
-        },
-        {
-            "label": "Compile /ss-fb42729d/",
-            "type": "shell",
-            "command": "python task.py -f ./ss-fb42729d/index_.md -o ./ss-fb42729d/index.html -t \"Spectral sequences\" && python task.py -f ./ss-fb42729d/mix.md -o ./ss-fb42729d/mix.html -t \"Spectral sequences\" && python task.py -f ./ss-fb42729d/auto.md -o ./ss-fb42729d/auto.html -t \"Spectral sequences\" && python task.py -f ./ss-fb42729d/mix1.md -o ./ss-fb42729d/mix1.html -t \"Spectral sequences\" && python task.py -f ./ss-fb42729d/mix2.md -o ./ss-fb42729d/mix2.html -t \"Spectral sequences\" && python task.py -f ./ss-fb42729d/mix3.md -o ./ss-fb42729d/mix3.html -t \"Spectral sequences\" && python task.py -f ./ss-fb42729d/manual_Adams.md -o ./ss-fb42729d/manual_Adams.html -t \"manual_Adams\" && python task.py -f ./ss-fb42729d/manual_ss.md -o ./ss-fb42729d/manual_ss.html -t \"manual_ss\" && python task.py -f ./ss-fb42729d/manual_html.md -o ./ss-fb42729d/manual_html.html -t \"manual_html\"",
+            "command": "python task.py -f index_.md -o index.html -t \"林伟南 | Home\"",
             "problemMatcher": []
         },
         {
             "label": "Compile /ss/index_.md",
             "type": "shell",
             "command": "python task.py -f ./ss/index_.md -o ./ss/index.html -t \"Spectral sequences\"",
-            "problemMatcher": []
-        },
-        {
-            "label": "Compile Courses",
-            "type": "shell",
-            "command": "python task.py -f ./assets/2022Spring/index_.md -o ./assets/2022Spring/index.html -t Teaching && python task.py -f ./assets/2023Fall/index_.md -o ./assets/2023Fall/index.html -t Teaching && python task.py -f ./assets/2024Spring/index_.md -o ./assets/2024Spring/index.html -t Teaching",
             "problemMatcher": []
         }
     ]

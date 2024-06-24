@@ -143703,7 +143703,7 @@ globalThis.DATA_JSON_tmf_C2_Ceta_Cnu = {
    "y": 64.0
   }
  ],
- "degs_factors": [[0,1], [1,1], [3,1]],
+ "degs_factors": [[0, 1], [1, 1], [3, 1]],
  "diffs": [
   {
    "i": 13,
@@ -171366,7 +171366,7 @@ globalThis.DATA_JSON_tmf_C2_Ceta_Cnu = {
  ],
  "over": "tmf",
  "prods": {},
- "time": "2024-04-29 18:37:49",
+ "time": "2024-05-28 23:07:50",
  "type": "module",
  "v_names": [
   "[0]",

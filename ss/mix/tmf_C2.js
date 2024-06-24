@@ -91191,7 +91191,7 @@ globalThis.DATA_JSON_tmf_C2 = {
    "y": 86.0
   }
  ],
- "degs_factors": [[0,1], [1,1], [3,1]],
+ "degs_factors": [[0, 1], [1, 1], [3, 1]],
  "diffs": [
   {
    "i": 15,
@@ -114983,7 +114983,7 @@ globalThis.DATA_JSON_tmf_C2 = {
    }
   ]
  },
- "time": "2024-04-29 18:37:47",
+ "time": "2024-05-28 23:07:48",
  "type": "module",
  "v_names": [
   "[0]",

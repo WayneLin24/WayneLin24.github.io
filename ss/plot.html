@@ -30,10 +30,8 @@
     <g id="g_svg">
       <g id="g_plot">
         <rect id="rect_selected" x="-1000" y="-1000" width="1" height="1" fill="red" opacity="0.1" />
-        <rect id="rect_separator" x="-1000" y="-0.5" width="1" height="300" fill="pink" opacity="0.2" data-x="14"
-          data-y="4" />
-        <rect id="rect_second_ss" x="-1000" y="-0.5" width="300" height="300" fill="yellow" opacity="0.1" data-x="14"
-          data-y="4" />
+        <rect id="rect_separator" x="-1000" y="-0.5" width="1" height="300" fill="pink" opacity="0.2" data-x="14" data-y="4" />
+        <rect id="rect_second_ss" x="-1000" y="-0.5" width="300" height="300" fill="yellow" opacity="0.1" data-x="14" data-y="4" />
 
         <g id="g_grid" stroke-width="0.009" stroke="grey"></g>
 
@@ -50,6 +48,7 @@
         <g id="g_difflines_red" stroke="red" fill="transparent"></g>
         <g id="g_difflines_deepskyblue" stroke="DeepSkyBlue" fill="transparent"></g>
         <g id="g_difflines_black" stroke="black" fill="transparent"></g>
+          <!-- <circle data-i="168" class="p b cw" cx="30" cy="10" r="0.07999999821186066"> </circle> -->
 
         <g id="g_prod" fill="green"></g>
         <g id="g_map" fill="Fuchsia"></g>
@@ -65,6 +64,9 @@
                 -o-user-select: none;
               " unselectable="on" onselectstart="return false;" onmousedown="return false;" transform="scale(1,-1)">
         </g>
+        
+        <!-- Shade for screenshot -->
+        <rect id="rect_shade" x="-10000" y="0" width="0" height="0" fill="black" opacity="0.1" />
       </g>
 
       <!-- The margin for axis labels -->
@@ -76,6 +78,7 @@
         transform="scale(1,-1)"></g>
       <g id="g_yaxis" text-anchor="end" unselectable="on" onselectstart="return false;" onmousedown="return false;"
         transform="scale(1,-1)"></g>
+
     </g>
   </svg>
   <div id="div_binfo">
@@ -111,11 +114,15 @@
   </div>
 
   <div id="div_menu">
+    <a href="#" onclick="on_screenshot()">
+      Tikz Screenshot
+      <span></span>
+    </a>
     <a href="#" onclick="on_time()">
       Last updated at ...
       <span></span>
     </a>
-    <a href="#" onclick="on_click_about()">
+    <a href="#" onclick="on_about()">
       About
       <span></span>
     </a>
