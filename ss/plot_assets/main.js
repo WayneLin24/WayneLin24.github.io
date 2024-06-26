@@ -332,7 +332,7 @@ function latexBullet(bullet) {
 function latexBullet_no_h012(bullet) {
     const data_json = getJsonForBullet(bullet);
     const bullet_json = data_json["bullets"][bullet.dataset.i];
-    if (bullet_json > 1)
+    if (bullet_json["b"].length > 1)
         return "";
     const basis_json = data_json["basis"];
     const offset_X = parseInt(bullet_json["i0"]);
@@ -758,8 +758,26 @@ function CountTrailingZeros(n)
 }
 
 function take_screenshot() {
-    let tex_string = "\\begin{figure}\n\\centering\n\\scalebox{1}{\\begin{tikzpicture}[line width=0.1pt]\n";
+    // SCREENSHOT_X_MIN = -0.5;
+    // SCREENSHOT_Y_MIN = -0.5;
+    // SCREENSHOT_X_MAX = 140.5;
+    // SCREENSHOT_Y_MAX = 71.5;
+    let tex_string = "\\newdimen\\widthA\\newcommand{\\resizelabel}[2]{\\settowidth{\\widthA}{#2}\\pgfmathsetmacro{\\ratio}{min((0.8cm)/max(\\widthA, 0.8cm), #1)}\\scalebox{\\ratio}{#2}}\n";
+    tex_string += "\\begin{figure}\n\\centering\n\\scalebox{1}{\\begin{tikzpicture}[line width=0.1pt]\n";
     tex_string += `\\draw (${RoundToHalf(SCREENSHOT_X_MIN)},${RoundToHalf(SCREENSHOT_Y_MIN)}) rectangle (${RoundToHalf(SCREENSHOT_X_MAX)},${RoundToHalf(SCREENSHOT_Y_MAX)});\n`
+    
+    // y axis labels
+    if (SCREENSHOT_X_MAX - SCREENSHOT_X_MIN > 20) {
+        for (let x = Math.ceil(SCREENSHOT_X_MIN); x < Math.ceil(SCREENSHOT_X_MAX) - 1; x++) {
+            if (x % 4 == 0) {
+                for (let y = Math.ceil(SCREENSHOT_Y_MIN); y < Math.ceil(SCREENSHOT_Y_MAX) - 1; y++) {
+                    tex_string += `\\node[text=black!10] at (${x},${y}) {$${y}$};\n`;
+                }
+            }
+        }
+    }
+
+    // axis
     for (let x = Math.ceil(SCREENSHOT_X_MIN); x < Math.ceil(SCREENSHOT_X_MAX); x++) {
         tex_string += `\\node at (${x},${Math.floor(SCREENSHOT_Y_MIN)}) {$${x}$};\n`;
     }
@@ -775,6 +793,33 @@ function take_screenshot() {
     }
     
     
+    // cache number of text
+    let nums_tex = {};
+    let nums_bullets = {};
+    for (const ele of document.getElementsByClassName("p")) {
+        const classList = ele.classList;
+        if (classList.contains("b") || classList.contains("baux")) {
+            // console.log(ele);////
+            if ((!classList.contains("cw1") || Math.round(ele.getAttribute("cx")) >= sep_right) && (!classList.contains("cw2") || Math.round(ele.getAttribute("cx")) <= sep_left)) {
+                const data_json = getJsonForBullet(ele);
+                const bullet_json = data_json["bullets"][ele.dataset.i];
+                // console.log(bullet_json);////
+                if (bullet_json['p'] >= CONFIG_DYNAMIC.page) {
+                    let ploted = false;
+                    if (bullet_json['p'] == CONFIG.R_PERM && bullet_json['d'] !== null) {
+                    }
+                    if (!ploted && in_screenshot(ele.getAttribute("cx"), ele.getAttribute("cy"))) {
+                        bullet_latex = latexBullet_no_h012(ele);
+                        const key = `${Math.round(ele.getAttribute("cx"))},${Math.round(ele.getAttribute("cy"))}`;
+                        if (bullet_latex !== "") {
+                            nums_tex[key] = nums_tex[key] ? nums_tex[key] + 1 : 1;
+                        }
+                        nums_bullets[key] = nums_bullets[key] ? nums_bullets[key] + 1 : 1;
+                    }
+                }
+            }
+        }
+    }
     for (const ele of document.getElementsByClassName("p")) {
         const classList = ele.classList;
         if (classList.contains("b") || classList.contains("baux")) {
@@ -793,8 +838,15 @@ function take_screenshot() {
                     }
                     if (!ploted && in_screenshot(ele.getAttribute("cx"), ele.getAttribute("cy"))) {
                         bullet_latex = latexBullet_no_h012(ele);
+                        //bullet_latex = "";
                         if (bullet_latex !== "") {
-                            bullet_latex = ` node[below] {\\scalebox{1}{$${bullet_latex}$}}`
+                            const key = `${Math.round(ele.getAttribute("cx"))},${Math.round(ele.getAttribute("cy"))}`;
+                            if (nums_tex[key] > 1) {
+                                bullet_latex = ` node[below] {\\resizelabel{${RoundCoor(0.5 / nums_tex[key])}}{$${bullet_latex}$}}`
+                            }
+                            else {
+                                bullet_latex = ` node[below] {\\resizelabel{${RoundCoor(2.0 / (2.0 + nums_bullets[key]))}}{$${bullet_latex}$}}`
+                            }
                         }
                         tex_string += `  \\fill (${RoundCoor(ele.getAttribute("cx"))},${RoundCoor(ele.getAttribute("cy"))}) circle (${RoundCoor(ele.getAttribute("r") * 0.8)})${bullet_latex};\n`;
                     }
