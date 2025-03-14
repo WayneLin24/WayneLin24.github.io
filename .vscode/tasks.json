@@ -6,13 +6,19 @@
         {
             "label": "Compile /index_.md",
             "type": "shell",
-            "command": "python task.py -f index_.md -o index.html -t \"林伟南 | Home\"",
+            "command": "python task.py -f index_.md -o index.html -t '林伟南 | Home'",
             "problemMatcher": []
         },
         {
             "label": "Compile /ss/index_.md",
             "type": "shell",
-            "command": "python task.py -f ./ss/index_.md -o ./ss/index.html -t \"Spectral sequences\"",
+            "command": "python task.py -f ./ss/index_.md -o ./ss/index.html -t 'Spectral sequences'",
+            "problemMatcher": []
+        },
+        {
+            "label": "Compile /ss/Z.md",
+            "type": "shell",
+            "command": "python task.py -f ./ss/Z.md -o ./ss/Z.html -t 'Spectral sequences'",
             "problemMatcher": []
         }
     ]

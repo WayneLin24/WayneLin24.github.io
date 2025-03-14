@@ -16,11 +16,13 @@ const config = {
     bullets_radius_world: 3.0 / 60,
     bullets_sep_world: 9.0 / 60 /* distance between the centers */,
     bullets_group_length_world: 1.1,
-    camera_zoom_rate: 1.2,
+    camera_zoom_rate: navigator.userAgent.match("Macintosh") ? 1.1 : 1.2,
+    camera_translate_pixels: 100,
     color_grid_line: "#909090",
     color_arrow: "#a0a0a0",
     color_normal: "#000000",
     rainbow_step: 5 / 23,
+    R_PERM: 1000
 };
 
 const config_dynamic = {
@@ -33,6 +35,8 @@ const config_dynamic = {
     showDashed: true,
     showLines: "All",
 };
+
+const urlParams = new URLSearchParams(window.location.search);
 
 /* The canvas is always as big as the window */
 const svg_ss = document.getElementById("svg_ss");
@@ -170,7 +174,7 @@ const camera = {
     },
 };
 
-function plotGridLines() {
+function addGridLines() {
     let g_grid = document.getElementById("g_grid");
     for (let i = 0; i <= config.y_max_grid; i += 1) {
         let line = `<line x1="-0.5" y1="${i}" x2="${config.x_max + 0.5}" y2="${i}"></line>\n`;
@@ -182,6 +186,24 @@ function plotGridLines() {
     }
 }
 
+function getAxisNumber(x) {
+    if (MODE == "DualPi") {
+        if (x < SEP_RIGHT)
+            return x;
+        else
+            return x - 1;
+    }
+    else if (MODE == "Exact") {
+        if (x % 3 == 2)
+            return Math.floor(x / 3 - T_TOP_CELL + 1)
+        else
+            return Math.floor(x / 3);
+    }
+    else {
+        return x;
+    }
+}
+
 function plotAxisLabels() {
     var stepLabel = Math.ceil(config.axis_text_sep_screen / camera.unit_svg);
     let i_min = Math.ceil(camera.svg2world(new Vector(30, 0)).x / stepLabel) * stepLabel;
@@ -189,7 +211,7 @@ function plotAxisLabels() {
     g_xaxis.innerHTML = "";
     for (let i = i_min; i <= i_max; i += stepLabel) {
         let xText = camera.world2svg(new Vector(i, 0)).x;
-        let label = `<text x="${xText}" y="-10">${i}</text>\n`;
+        let label = `<text x="${xText}" y="-10">${getAxisNumber(i)}</text>\n`;
         g_xaxis.insertAdjacentHTML("beforeend", label);
     }
     i_min = Math.ceil(camera.svg2world(new Vector(0, 30)).y / stepLabel) * stepLabel;
@@ -252,15 +274,25 @@ function replaceAll(str, find, replace) {
     return str.replace(new RegExp(find, 'g'), replace);
 }
 
-function plotBulletLabels() {
+function addBulletLabels() {
     const bullets = document.getElementsByClassName("b");
     g_labels.innerHTML = "";
-    for (bullet of bullets) {
+    for (const bullet of bullets) {
         if (bullet.tagName === "circle" && bullet.id.slice(0, 1) === "b") {
             let str_mon = strLable(bullet.id);
             str_mon = replaceAll(str_mon, /\\Delta\s?/, "Δ");
             str_mon = replaceAll(str_mon, /\\mu\s?/, "μ");
+            str_mon = replaceAll(str_mon, /\\rho\s?/, "ρ");
             str_mon = replaceAll(str_mon, /\\iota\s?/, "ι");
+            str_mon = replaceAll(str_mon, /\\eta\s?/, "η");
+            str_mon = replaceAll(str_mon, /\\nu\s?/, "ν");
+            str_mon = replaceAll(str_mon, /\\bar\\sigma\s?/, "σ&#772");
+            str_mon = replaceAll(str_mon, /\\sigma\s?/, "σ");
+            str_mon = replaceAll(str_mon, /\\epsilon\s?/, "ε");
+            str_mon = replaceAll(str_mon, /\\theta\s?/, "θ");
+            str_mon = replaceAll(str_mon, /\\bar\\kappa\s?/, "κ&#772");
+            str_mon = replaceAll(str_mon, /\\kappa\s?/, "κ");
+            str_mon = replaceAll(str_mon, /\\zeta\s?/, "ζ");
             str_mon = replaceAll(str_mon, /\^\\prime\s?/, "'");
             str_mon = replaceAll(str_mon, /\^\{\\prime\\prime}\s?/, "''");
             str_mon = replaceAll(str_mon, /_(\d)/, "$1");
@@ -269,7 +301,12 @@ function plotBulletLabels() {
             const re = /^(?!(P|P\^\d|P\^\d\d|Δ|M|M_1|\()h(0|1|2)).*h(0|1|2)/;
             if (str_mon.length <= 10 && parseFloat(bullet.getAttribute("cx")) <= 127 && !(str_mon.match(re) && str_mon.length > 2)) {
                 const r = parseFloat(bullet.getAttribute("r"));
-                const label = `<text class="label" x=${parseFloat(bullet.getAttribute("cx")) - r * 0.75} y=${-parseFloat(bullet.getAttribute("cy")) + r * 2} font-size=${r * 1.125} data-page=${bullet.dataset.page}>${str_mon}</text>\n`;
+                let class_ = "label";
+                if (bullet.classList.contains("b0"))
+                    class_ += " label0";
+                else if (bullet.classList.contains("b1"))
+                    class_ += " label1";
+                const label = `<text class="${class_}" x=${parseFloat(bullet.getAttribute("cx")) - r * 0.75} y=${-parseFloat(bullet.getAttribute("cy")) + r * 2} font-size=${r * 1.125} data-page=${bullet.dataset.page}>${str_mon}</text>\n`;
                 g_labels.insertAdjacentHTML("beforeend", label);
             }
         }
@@ -279,63 +316,58 @@ function plotBulletLabels() {
 function AdjustVisibilityBySeparator() {
     const rect_separator = document.getElementById("rect_separator");
     const rect_second_ss = document.getElementById("rect_second_ss");
-    rect_separator.setAttribute('x', sep_right - sep_width);
-    rect_separator.setAttribute('width', sep_width);
-    rect_second_ss.setAttribute('x', sep_right - sep_width - 300);
+    rect_separator.setAttribute('x', SEP_RIGHT - SEP_WIDTH);
+    rect_separator.setAttribute('width', SEP_WIDTH);
+    rect_second_ss.setAttribute('x', SEP_RIGHT - SEP_WIDTH - 300);
+    const sep_left = SEP_RIGHT - SEP_WIDTH;
 
-    const sep_left = sep_right - sep_width;
     const bullets_b0 = document.getElementsByClassName("b0");
-	for (const b of bullets_b0) {
+    for (const b of bullets_b0) {
         const x = Math.round(b.getAttribute("cx"));
-		if (x <= sep_left) {
-			b.style.visibility = "visible";
-		}
-		else {
-			b.style.visibility = "hidden";
-		}
-	}
+        if (x <= sep_left)
+            b.style.visibility = "visible";
+        else
+            b.style.visibility = "hidden";
+    }
+
     const bullets_b1 = document.getElementsByClassName("b1");
-	for (const b of bullets_b1) {
+    for (const b of bullets_b1) {
         const x = Math.round(b.getAttribute("cx"));
-		if (x >= sep_right) {
-			b.style.visibility = "visible";
-		}
-		else {
-			b.style.visibility = "hidden";
-		}
-	}
+        if (x >= SEP_RIGHT)
+            b.style.visibility = "visible";
+        else
+            b.style.visibility = "hidden";
+    }
+
     const lines_l0 = document.getElementsByClassName("l0");
-	for (const line of lines_l0) {
+    for (const line of lines_l0) {
         const x1 = parseInt(line.dataset.x1);
         const x2 = parseInt(line.dataset.x2);
-		if (x1 <= sep_left && x2 <= sep_left) {
-			line.style.visibility = "visible";
-		}
-		else {
-			line.style.visibility = "hidden";
-		}
-	}
+        if (x1 <= sep_left && x2 <= sep_left)
+            line.style.visibility = "visible";
+        else
+            line.style.visibility = "hidden";
+    }
+
     const lines_l1 = document.getElementsByClassName("l1");
-	for (const line of lines_l1) {
+    for (const line of lines_l1) {
         const x1 = parseInt(line.dataset.x1);
         const x2 = parseInt(line.dataset.x2);
-		if (x1 >= sep_right && x2 >= sep_right) {
-			line.style.visibility = "visible";
-		}
-		else {
-			line.style.visibility = "hidden";
-		}
-	}
+        if (x1 >= SEP_RIGHT && x2 >= SEP_RIGHT)
+            line.style.visibility = "visible";
+        else
+            line.style.visibility = "hidden";
+    }
+
     const lines_lbc = document.getElementsByClassName("lbc");
-    if (sep_width != 1) {
-        for (const line of lines_lbc) {
+    if (SEP_WIDTH != 1) {
+        for (const line of lines_lbc)
             line.style.visibility = "hidden";
-        }
     }
     else {
         for (const line of lines_lbc) {
             const x2 = parseInt(line.dataset.x2);
-            if (x2 == sep_right) {
+            if (x2 == SEP_RIGHT) {
                 line.style.visibility = "visible";
             }
             else {
@@ -343,8 +375,9 @@ function AdjustVisibilityBySeparator() {
             }
         }
     }
+
     const lines_ltc = document.getElementsByClassName("ltc");
-    if (sep_width == 1) {
+    if (SEP_WIDTH == 1) {
         for (const line of lines_ltc) {
             line.style.visibility = "hidden";
         }
@@ -352,13 +385,63 @@ function AdjustVisibilityBySeparator() {
     else {
         for (const line of lines_ltc) {
             const x2 = parseInt(line.dataset.x2);
-            if (x2 == sep_right) {
+            if (x2 == SEP_RIGHT)
                 line.style.visibility = "visible";
-            }
-            else {
+            else
                 line.style.visibility = "hidden";
-            }
         }
+    }
+
+    const labels0 = document.getElementsByClassName("label0");
+    for (const label of labels0) {
+        const x = Math.round(parseFloat(label.getAttribute("x")));
+        if (x <= sep_left)
+            label.style.visibility = "visible";
+        else
+            label.style.visibility = "hidden";
+    }
+
+    const labels1 = document.getElementsByClassName("label1");
+    for (const label of labels1) {
+        const x = Math.round(parseFloat(label.getAttribute("x")));
+        if (x >= SEP_RIGHT)
+            label.style.visibility = "visible";
+        else
+            label.style.visibility = "hidden";
+    }
+}
+
+function addRectProduct() {
+    for (const i of arr_factors) {
+        const id = "b" + i;
+        const bullet = document.getElementById(id);
+        let rect_product = `<rect id="rect_prod${i}" x="-1000" y="-1000" width="1" height="1" fill="green" opacity="0.1"  data-x="${bullet.getAttribute("cx")}" data-y="${bullet.getAttribute("cy")}" />`;
+        g_plot.insertAdjacentHTML("afterbegin", rect_product);
+    }
+    if (MODE === "Exact") {
+        for (let i = 0; i < 300; ++i) {
+            let rect_product = `<rect x="${3*i-0.5}" y="-0.5" width="1" height="300" fill="#00ffff" opacity="0.1"/>`;
+            g_plot.insertAdjacentHTML("afterbegin", rect_product);
+        }
+    }
+}
+
+function processParams() {
+    let has_x = urlParams.get("x") !== null, has_y = urlParams.get("y") !== null;
+    if (has_x && has_y && urlParams.get("scale") !== null) {
+        const pivot_svg = camera.world2svg(new Vector(urlParams.get("x"), urlParams.get("y")));
+        const scale = urlParams.get("scale");
+        camera.zoom(pivot_svg, scale);
+    }
+    if (has_x) {
+        wx = urlParams.get("x");
+        const pivot_svg = camera.world2svg(new Vector(wx, 0));
+        camera.translate(new Vector(config.margin + (window.innerWidth - config.margin) / 2 - pivot_svg.x, 0));
+    }
+    if (has_y) {
+        wy = urlParams.get("y");
+        const pivot_svg = camera.world2svg(new Vector(0, wy));
+        camera.translate(new Vector(0, config.margin + (window.innerHeight - config.margin) / 2 - pivot_svg.y));
     }
 }
 
@@ -373,15 +456,15 @@ function init() {
         "translate(0," + window.innerHeight + ") scale(1,-1)"
     );
     g_plot.setAttribute("transform", camera.getTransform());
-    plotGridLines();
+    addGridLines();
     plotAxisLabels();
-    plotBulletLabels();
+    // if (MODE !== "FromRes")
+    //     addBulletLabels();
+    addRectProduct();
 
-    if (typeof MODE !== 'undefined') {
-        if (MODE == "DualSS") {
-            AdjustVisibilityBySeparator();
-        }
-    }
-
+    if (MODE === "DualPi")
+        AdjustVisibilityBySeparator();
     initHandlers();
+
+    processParams();
 }

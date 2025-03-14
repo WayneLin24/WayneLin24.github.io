@@ -1,0 +1,353 @@
+<!doctype html>
+<html>
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QKTQQPYBTB"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-QKTQQPYBTB');
+    </script>
+
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="github-markdown.css">
+    <title>Spectral sequences</title>
+    <style media="screen" type="text/css">
+        .markdown-body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+        }
+
+        @media (max-width: 767px) {
+            .markdown-body {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body class="markdown-body">
+    <h1>Spectral sequences</h1>
+<h2>Adams Spectral sequence</h2>
+<p>Instructions:</p>
+<ul>
+<li>On the plots, you can click a dot twice to see its information.</li>
+<li>You can use your mouse to drag the plot to move it. You can use your mouse wheel to zoom in/out.</li>
+<li>The plots works smoothly on ipad or other touch devices.</li>
+<li>You can also use arrow keys to move the plots. You can press +/- to zoom in/out.</li>
+<li>On plots of maps, you can press <code>Shift+Arrows</code> to move the ribbon around. You can also click your mouse while pressing <code>Shift</code> to quickly move the ribbon.</li>
+<li>You can right click to make screenshots of the plots in the form of latex tikz code.</li>
+</ul>
+<h3>Ring spectra</h3>
+<p><a href="plot.html?diagram=Z&amp;data=S0">S0</a>   </p>
+<h3>Modules</h3>
+<p><a href="plot.html?diagram=Z&amp;data=C2">C2</a>   
+<a href="plot.html?diagram=Z&amp;data=Ceta">Ceta</a>   
+<a href="plot.html?diagram=Z&amp;data=Cnu">Cnu</a>   
+<a href="plot.html?diagram=Z&amp;data=Csigma">Csigma</a>   </p>
+<p><a href="plot.html?diagram=Z&amp;data=C2_Ceta">C2_Ceta</a>   
+<a href="plot.html?diagram=Z&amp;data=A1_00">A1_00</a>   
+<a href="plot.html?diagram=Z&amp;data=A1_00_Cnu">A1_00_Cnu</a>   
+<a href="plot.html?diagram=Z&amp;data=Z">Z</a>   
+<a href="plot.html?diagram=Z&amp;data=A2">A2</a>   </p>
+<p><a href="plot.html?diagram=Z&amp;data=C2h4">C2h4</a>   
+<a href="plot.html?diagram=Z&amp;data=C2h5">C2h5</a>   
+<a href="plot.html?diagram=Z&amp;data=C2h6">C2h6</a>   
+<a href="plot.html?diagram=Z&amp;data=DC2h4">DC2h4</a>   
+<a href="plot.html?diagram=Z&amp;data=DC2h5">DC2h5</a>   
+<a href="plot.html?diagram=Z&amp;data=DC2h6">DC2h6</a>   </p>
+<p><a href="plot.html?diagram=Z&amp;data=CW_2_sigmasq_2">CW_2_sigmasq_2</a>   
+<a href="plot.html?diagram=Z&amp;data=C2_C2">C2_C2</a>   
+<a href="plot.html?diagram=Z&amp;data=C2_Cnu">C2_Cnu</a>   
+<a href="plot.html?diagram=Z&amp;data=C2_Csigma">C2_Csigma</a>   
+<a href="plot.html?diagram=Z&amp;data=Ceta_Cnu">Ceta_Cnu</a>   
+<a href="plot.html?diagram=Z&amp;data=Ceta_Csigma">Ceta_Csigma</a>   
+<a href="plot.html?diagram=Z&amp;data=Cnu_Csigma">Cnu_Csigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2sigma_sigma">CW_2sigma_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_eta">CW_2_eta</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_eta_nu">CW_2_eta_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_eta_nu_sigma">CW_2_eta_nu_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_eta_theta5sq">CW_2_eta_theta5sq</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_etasigma_2_eta_nu">CW_etasigma_2_eta_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_etasigma_2_eta_nu_sigma">CW_etasigma_2_eta_nu_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_2">CW_eta_2</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_nu">CW_eta_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_nu_sigma">CW_eta_nu_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_eta_2">CW_nu_eta_2</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_eta_2_etasigma">CW_nu_eta_2_etasigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_eta">CW_nu_eta</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_sigma">CW_nu_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_sigmasq_2_sigmasq">CW_sigmasq_2_sigmasq</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_sigma_2sigma">CW_sigma_2sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_sigma_nu">CW_sigma_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_sigma_nu_eta_2">CW_sigma_nu_eta_2</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_sigma_nu_eta_2_etasigma">CW_sigma_nu_eta_2_etasigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_sigma_nu_eta">CW_sigma_nu_eta</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_theta4_2_theta4">CW_theta4_2_theta4</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_theta5sq_eta_2">CW_theta5sq_eta_2</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_theta5_2_theta5">CW_theta5_2_theta5</a>   </p>
+<p><a href="plot.html?diagram=Z&amp;data=Joker">Joker</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_2_eta_Eq_2_nu">CW_eta_2_eta_Eq_2_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_2_eta_Eq_nu_2">CW_eta_2_eta_Eq_nu_2</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_nu_eta_Eq_nu_nu">CW_eta_nu_eta_Eq_nu_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_sigma_nu_Eq_sigma_sigma">CW_nu_sigma_nu_Eq_sigma_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_theta5_2_Eq_eta_theta5">CW_2_theta5_2_Eq_eta_theta5</a>   </p>
+<p><a href="plot.html?diagram=Z&amp;data=CW_2_eta_V_eta">CW_2_eta_V_eta</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_V_eta">CW_2_V_eta</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_V_nu">CW_2_V_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_V_sigma">CW_2_V_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_nu_V_nu">CW_eta_nu_V_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_V_nu">CW_eta_V_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_V_sigma">CW_eta_V_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_sigma_V_sigma">CW_nu_sigma_V_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_V_sigma">CW_nu_V_sigma</a>   </p>
+<p><a href="plot.html?diagram=Z&amp;data=CW_2_A_eta">CW_2_A_eta</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_A_nu">CW_2_A_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_A_sigma">CW_2_A_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_2_A_eta">CW_eta_2_A_eta</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_A_nu">CW_eta_A_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_A_sigma">CW_eta_A_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_A_sigma">CW_nu_A_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_eta_A_nu">CW_nu_eta_A_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_sigma_nu_A_sigma">CW_sigma_nu_A_sigma</a>   </p>
+<p><a href="plot.html?diagram=Z&amp;data=RP1_10">RP1_10</a>   
+<a href="plot.html?diagram=Z&amp;data=RP1_11">RP1_11</a>   
+<a href="plot.html?diagram=Z&amp;data=RP1_12">RP1_12</a>   
+<a href="plot.html?diagram=Z&amp;data=RP1_4">RP1_4</a>   
+<a href="plot.html?diagram=Z&amp;data=RP1_5">RP1_5</a>   
+<a href="plot.html?diagram=Z&amp;data=RP1_6">RP1_6</a>   
+<a href="plot.html?diagram=Z&amp;data=RP1_8">RP1_8</a>   
+<a href="plot.html?diagram=Z&amp;data=RP1_9">RP1_9</a>   
+<a href="plot.html?diagram=Z&amp;data=RP3_256">RP3_256</a>   
+<a href="plot.html?diagram=Z&amp;data=RP4_256">RP4_256</a>   
+<a href="plot.html?diagram=Z&amp;data=RP5_256">RP5_256</a>   </p>
+<h3>Cofiber Sequences</h3>
+<p><a href="plot.html?diagram=Z&amp;data=S0__C2__S0">S0__C2__S0</a>   
+<a href="plot.html?diagram=Z&amp;data=S0__Ceta__S0">S0__Ceta__S0</a>   
+<a href="plot.html?diagram=Z&amp;data=S0__Cnu__S0">S0__Cnu__S0</a>   
+<a href="plot.html?diagram=Z&amp;data=S0__Csigma__S0">S0__Csigma__S0</a>   </p>
+<p><a href="plot.html?diagram=Z&amp;data=C2__C2_Ceta__C2">C2__C2_Ceta__C2</a>   
+<a href="plot.html?diagram=Z&amp;data=C2_Ceta__A1__C2_Ceta">C2_Ceta__A1__C2_Ceta</a>   
+<a href="plot.html?diagram=Z&amp;data=A1_00__A1_00_Cnu__A1_00">A1_00__A1_00_Cnu__A1_00</a>   
+<a href="plot.html?diagram=Z&amp;data=A1_00_Cnu__Z__A1_00_Cnu">A1_00_Cnu__Z__A1_00_Cnu</a>   
+<a href="plot.html?diagram=Z&amp;data=Z__A2__Z">Z__A2__Z</a>   </p>
+<p><a href="plot.html?diagram=Z&amp;data=C2__CW_2_eta__S0">C2__CW_2_eta__S0</a>   
+<a href="plot.html?diagram=Z&amp;data=Ceta__C2_Ceta__Ceta">Ceta__C2_Ceta__Ceta</a>   
+<a href="plot.html?diagram=Z&amp;data=Ceta__CW_eta_nu__S0">Ceta__CW_eta_nu__S0</a>   
+<a href="plot.html?diagram=Z&amp;data=Cnu__CW_nu_sigma__S0">Cnu__CW_nu_sigma__S0</a>   
+<a href="plot.html?diagram=Z&amp;data=S0__CW_eta_2__C2">S0__CW_eta_2__C2</a>   
+<a href="plot.html?diagram=Z&amp;data=Ceta__CW_eta_2__S0">Ceta__CW_eta_2__S0</a>   
+<a href="plot.html?diagram=Z&amp;data=S0__CW_nu_eta__Ceta">S0__CW_nu_eta__Ceta</a>   
+<a href="plot.html?diagram=Z&amp;data=Cnu__CW_nu_eta__S0">Cnu__CW_nu_eta__S0</a>   
+<a href="plot.html?diagram=Z&amp;data=S0__CW_sigma_nu__Cnu">S0__CW_sigma_nu__Cnu</a>   
+<a href="plot.html?diagram=Z&amp;data=Csigma__CW_sigma_nu__S0">Csigma__CW_sigma_nu__S0</a>   </p>
+<p><a href="plot.html?diagram=Z&amp;data=C2__C2h4__S0">C2__C2h4__S0</a>   
+<a href="plot.html?diagram=Z&amp;data=C2__C2h5__S0">C2__C2h5__S0</a>   
+<a href="plot.html?diagram=Z&amp;data=C2__C2h6__S0">C2__C2h6__S0</a>   </p>
+<p><a href="plot.html?diagram=Z&amp;data=C2__CW_2_V_eta__S2">C2__CW_2_V_eta__S2</a>   
+<a href="plot.html?diagram=Z&amp;data=Ceta__CW_2_V_eta__S1">Ceta__CW_2_V_eta__S1</a>   
+<a href="plot.html?diagram=Z&amp;data=S0__CW_2_A_eta__C2">S0__CW_2_A_eta__C2</a>   
+<a href="plot.html?diagram=Z&amp;data=S1__CW_2_A_eta__Ceta">S1__CW_2_A_eta__Ceta</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_eta__CW_2_eta_nu__S0">CW_2_eta__CW_2_eta_nu__S0</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_nu__CW_eta_nu_sigma__S0">CW_eta_nu__CW_eta_nu_sigma__S0</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_eta__CW_nu_eta_2__S0">CW_nu_eta__CW_nu_eta_2__S0</a>   
+<a href="plot.html?diagram=Z&amp;data=S0__CW_2_eta_nu_sigma__CW_eta_nu_sigma">S0__CW_2_eta_nu_sigma__CW_eta_nu_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=C2__CW_2_eta_nu_sigma__CW_nu_sigma">C2__CW_2_eta_nu_sigma__CW_nu_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_eta__CW_2_eta_nu_sigma__Csigma">CW_2_eta__CW_2_eta_nu_sigma__Csigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_eta_nu__CW_2_eta_nu_sigma__S0">CW_2_eta_nu__CW_2_eta_nu_sigma__S0</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_2__RP1_6__CW_2_eta">CW_eta_2__RP1_6__CW_2_eta</a>   </p>
+<h3>Maps</h3>
+<p><a href="plot.html?diagram=Z&amp;data=A1_00__C2_Ceta">A1_00__C2_Ceta</a>   
+<a href="plot.html?diagram=Z&amp;data=A1_00_Cnu__A1_00">A1_00_Cnu__A1_00</a>   
+<a href="plot.html?diagram=Z&amp;data=A1_00_Cnu__Q_Z">A1_00_Cnu__Q_Z</a>   
+<a href="plot.html?diagram=Z&amp;data=A1_00_Cnu__Z">A1_00_Cnu__Z</a>   
+<a href="plot.html?diagram=Z&amp;data=A1_00__A1_00_Cnu">A1_00__A1_00_Cnu</a>   
+<a href="plot.html?diagram=Z&amp;data=A1_00__C2_Ceta">A1_00__C2_Ceta</a>   
+<a href="plot.html?diagram=Z&amp;data=A2__Z">A2__Z</a>   </p>
+<p><a href="plot.html?diagram=Z&amp;data=Z__A1_00_Cnu">Z__A1_00_Cnu</a>   
+<a href="plot.html?diagram=Z&amp;data=Z__A2">Z__A2</a>   
+<a href="plot.html?diagram=Z&amp;data=Z__Z_by_v2">Z__Z_by_v2</a>   </p>
+<p><a href="plot.html?diagram=Z&amp;data=C2_Ceta__A1_00">C2_Ceta__A1_00</a>   
+<a href="plot.html?diagram=Z&amp;data=C2_Ceta__CW_2_A_eta">C2_Ceta__CW_2_A_eta</a>   
+<a href="plot.html?diagram=Z&amp;data=C2_Ceta__Q_A1_00">C2_Ceta__Q_A1_00</a>   
+<a href="plot.html?diagram=Z&amp;data=C2_Cnu__CW_2_A_nu">C2_Cnu__CW_2_A_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=C2_Csigma__CW_2_A_sigma">C2_Csigma__CW_2_A_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=C2__C2h4">C2__C2h4</a>   
+<a href="plot.html?diagram=Z&amp;data=C2__C2h5">C2__C2h5</a>   
+<a href="plot.html?diagram=Z&amp;data=C2__C2h6">C2__C2h6</a>   
+<a href="plot.html?diagram=Z&amp;data=C2__CW_2_V_eta">C2__CW_2_V_eta</a>   
+<a href="plot.html?diagram=Z&amp;data=C2__CW_2_V_nu">C2__CW_2_V_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=C2__CW_2_V_sigma">C2__CW_2_V_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=C2__CW_2_eta">C2__CW_2_eta</a>   
+<a href="plot.html?diagram=Z&amp;data=C2__CW_eta_2_eta_Eq_2_nu">C2__CW_eta_2_eta_Eq_2_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=C2__CW_sigma_nu_by_eta">C2__CW_sigma_nu_by_eta</a>   
+<a href="plot.html?diagram=Z&amp;data=C2__Q_CW_2_A_eta">C2__Q_CW_2_A_eta</a>   
+<a href="plot.html?diagram=Z&amp;data=C2__Q_CW_2_theta5_2_Eq_eta_theta5">C2__Q_CW_2_theta5_2_Eq_eta_theta5</a>   
+<a href="plot.html?diagram=Z&amp;data=C2__Q_CW_eta_2_eta_Eq_nu_2">C2__Q_CW_eta_2_eta_Eq_nu_2</a>   
+<a href="plot.html?diagram=Z&amp;data=C2__Q_Joker">C2__Q_Joker</a>   
+<a href="plot.html?diagram=Z&amp;data=C2__S0">C2__S0</a>   </p>
+<p><a href="plot.html?diagram=Z&amp;data=C2h4__S0">C2h4__S0</a>   
+<a href="plot.html?diagram=Z&amp;data=C2h5__S0">C2h5__S0</a>   
+<a href="plot.html?diagram=Z&amp;data=C2h6__CW_2_theta5_2_Eq_eta_theta5">C2h6__CW_2_theta5_2_Eq_eta_theta5</a>   
+<a href="plot.html?diagram=Z&amp;data=C2h6__S0">C2h6__S0</a>   </p>
+<p><a href="plot.html?diagram=Z&amp;data=CW_2_A_eta__C2">CW_2_A_eta__C2</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_A_eta__Ceta">CW_2_A_eta__Ceta</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_A_eta__Q_C2_Ceta">CW_2_A_eta__Q_C2_Ceta</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_A_eta__Q_CW_eta_2_eta_Eq_nu_2">CW_2_A_eta__Q_CW_eta_2_eta_Eq_nu_2</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_A_eta__Q_Joker">CW_2_A_eta__Q_Joker</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_A_nu__C2">CW_2_A_nu__C2</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_A_nu__Cnu">CW_2_A_nu__Cnu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_A_nu__Q_C2_Cnu">CW_2_A_nu__Q_C2_Cnu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_A_sigma__C2">CW_2_A_sigma__C2</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_A_sigma__Csigma">CW_2_A_sigma__Csigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_A_sigma__Q_C2_Csigma">CW_2_A_sigma__Q_C2_Csigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_V_eta__C2_Ceta">CW_2_V_eta__C2_Ceta</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_V_eta__CW_2_eta_V_eta">CW_2_V_eta__CW_2_eta_V_eta</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_V_eta__CW_2_theta5_2_Eq_eta_theta5">CW_2_V_eta__CW_2_theta5_2_Eq_eta_theta5</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_V_eta__CW_eta_2_eta_Eq_2_nu">CW_2_V_eta__CW_eta_2_eta_Eq_2_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_V_eta__S1">CW_2_V_eta__S1</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_V_eta__S2">CW_2_V_eta__S2</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_V_nu__C2_Cnu">CW_2_V_nu__C2_Cnu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_V_sigma__C2_Csigma">CW_2_V_sigma__C2_Csigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_eta_V_eta__Joker">CW_2_eta_V_eta__Joker</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_eta__CW_2_eta_V_eta">CW_2_eta__CW_2_eta_V_eta</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_eta__CW_2_eta_nu">CW_2_eta__CW_2_eta_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_eta__Ceta">CW_2_eta__Ceta</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_eta__Q_CW_eta_2_eta_Eq_2_nu">CW_2_eta__Q_CW_eta_2_eta_Eq_2_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_eta__Q_CW_eta_2_eta_Eq_nu_2">CW_2_eta__Q_CW_eta_2_eta_Eq_nu_2</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_eta__Q_RP1_6">CW_2_eta__Q_RP1_6</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_eta_nu__CW_2_eta_nu_sigma">CW_2_eta_nu__CW_2_eta_nu_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_eta_nu__CW_eta_nu">CW_2_eta_nu__CW_eta_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_eta_nu_sigma__CW_eta_nu_sigma">CW_2_eta_nu_sigma__CW_eta_nu_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_theta5_2_Eq_eta_theta5__DC2h6">CW_2_theta5_2_Eq_eta_theta5__DC2h6</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_2_theta5_2_Eq_eta_theta5__S0">CW_2_theta5_2_Eq_eta_theta5__S0</a>   </p>
+<p><a href="plot.html?diagram=Z&amp;data=CW_eta_2_A_eta__CW_2_A_eta">CW_eta_2_A_eta__CW_2_A_eta</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_2_A_eta__CW_eta_2">CW_eta_2_A_eta__CW_eta_2</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_2_A_eta__Q_Joker">CW_eta_2_A_eta__Q_Joker</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_2__C2">CW_eta_2__C2</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_2__CW_eta_2_eta_Eq_2_nu">CW_eta_2__CW_eta_2_eta_Eq_2_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_2__CW_eta_2_eta_Eq_nu_2">CW_eta_2__CW_eta_2_eta_Eq_nu_2</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_2__Csigma_by_nu">CW_eta_2__Csigma_by_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_2__Q_Joker">CW_eta_2__Q_Joker</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_2__RP1_6">CW_eta_2__RP1_6</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_2_eta_Eq_2_nu__CW_2_eta">CW_eta_2_eta_Eq_2_nu__CW_2_eta</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_2_eta_Eq_2_nu__CW_eta_A_nu">CW_eta_2_eta_Eq_2_nu__CW_eta_A_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_2_eta_Eq_2_nu__Cnu">CW_eta_2_eta_Eq_2_nu__Cnu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_2_eta_Eq_nu_2__C2">CW_eta_2_eta_Eq_nu_2__C2</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_2_eta_Eq_nu_2__CW_2_A_eta">CW_eta_2_eta_Eq_nu_2__CW_2_A_eta</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_2_eta_Eq_nu_2__CW_2_eta">CW_eta_2_eta_Eq_nu_2__CW_2_eta</a>   </p>
+<p><a href="plot.html?diagram=Z&amp;data=CW_eta_A_nu__Ceta">CW_eta_A_nu__Ceta</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_A_nu__Cnu">CW_eta_A_nu__Cnu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_A_nu__Q_CW_eta_2_eta_Eq_2_nu">CW_eta_A_nu__Q_CW_eta_2_eta_Eq_2_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_A_nu__Q_CW_eta_nu_eta_Eq_nu_nu">CW_eta_A_nu__Q_CW_eta_nu_eta_Eq_nu_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_A_nu__Q_Ceta_Cnu">CW_eta_A_nu__Q_Ceta_Cnu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_A_sigma__Ceta">CW_eta_A_sigma__Ceta</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_A_sigma__Csigma">CW_eta_A_sigma__Csigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_A_sigma__Q_Ceta_Csigma">CW_eta_A_sigma__Q_Ceta_Csigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_V_nu__CW_eta_2_eta_Eq_nu_2">CW_eta_V_nu__CW_eta_2_eta_Eq_nu_2</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_V_nu__CW_eta_nu_V_nu">CW_eta_V_nu__CW_eta_nu_V_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_V_nu__Ceta_Cnu">CW_eta_V_nu__Ceta_Cnu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_V_nu__S4">CW_eta_V_nu__S4</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_V_sigma__Ceta_Csigma">CW_eta_V_sigma__Ceta_Csigma</a>   </p>
+<p><a href="plot.html?diagram=Z&amp;data=CW_eta_nu_V_nu__CW_eta_nu_eta_Eq_nu_nu">CW_eta_nu_V_nu__CW_eta_nu_eta_Eq_nu_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_nu__CW_eta_nu_V_nu">CW_eta_nu__CW_eta_nu_V_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_nu__CW_eta_nu_sigma">CW_eta_nu__CW_eta_nu_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_nu__Cnu">CW_eta_nu__Cnu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_nu_eta_Eq_nu_nu__CW_nu_eta_A_nu">CW_eta_nu_eta_Eq_nu_nu__CW_nu_eta_A_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_nu_sigma__CW_nu_sigma">CW_eta_nu_sigma__CW_nu_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_eta_nu_sigma__S0_by_2">CW_eta_nu_sigma__S0_by_2</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_etasigma_2_eta_nu__CW_2_eta_nu">CW_etasigma_2_eta_nu__CW_2_eta_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_etasigma_2_eta_nu_sigma__CW_2_eta_nu_sigma">CW_etasigma_2_eta_nu_sigma__CW_2_eta_nu_sigma</a>   </p>
+<p><a href="plot.html?diagram=Z&amp;data=CW_nu_A_sigma__Cnu">CW_nu_A_sigma__Cnu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_A_sigma__Csigma">CW_nu_A_sigma__Csigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_A_sigma__Q_CW_nu_sigma_nu_Eq_sigma_sigma">CW_nu_A_sigma__Q_CW_nu_sigma_nu_Eq_sigma_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_A_sigma__Q_Cnu_Csigma">CW_nu_A_sigma__Q_Cnu_Csigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_V_sigma__CW_nu_sigma_V_sigma">CW_nu_V_sigma__CW_nu_sigma_V_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_V_sigma__Cnu_Csigma">CW_nu_V_sigma__Cnu_Csigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_V_sigma__S4">CW_nu_V_sigma__S4</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_V_sigma__S8">CW_nu_V_sigma__S8</a>   </p>
+<p><a href="plot.html?diagram=Z&amp;data=CW_nu_eta_2__CW_eta_2">CW_nu_eta_2__CW_eta_2</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_eta_2__CW_nu_eta_2_etasigma">CW_nu_eta_2__CW_nu_eta_2_etasigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_eta_2__S0_by_sigma">CW_nu_eta_2__S0_by_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_eta_A_nu__CW_eta_A_nu">CW_nu_eta_A_nu__CW_eta_A_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_eta_A_nu__CW_nu_eta">CW_nu_eta_A_nu__CW_nu_eta</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_eta_A_nu__Q_CW_eta_nu_eta_Eq_nu_nu">CW_nu_eta_A_nu__Q_CW_eta_nu_eta_Eq_nu_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_eta__CW_nu_eta_2">CW_nu_eta__CW_nu_eta_2</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_eta__Ceta">CW_nu_eta__Ceta</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_eta__Q_CW_eta_nu_eta_Eq_nu_nu">CW_nu_eta__Q_CW_eta_nu_eta_Eq_nu_nu</a>   </p>
+<p><a href="plot.html?diagram=Z&amp;data=CW_nu_sigma_V_sigma__CW_nu_sigma_nu_Eq_sigma_sigma">CW_nu_sigma_V_sigma__CW_nu_sigma_nu_Eq_sigma_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_sigma__C2_by_eta">CW_nu_sigma__C2_by_eta</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_sigma__CW_nu_sigma_V_sigma">CW_nu_sigma__CW_nu_sigma_V_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_sigma__Csigma">CW_nu_sigma__Csigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_nu_sigma_nu_Eq_sigma_sigma__CW_sigma_nu_A_sigma">CW_nu_sigma_nu_Eq_sigma_sigma__CW_sigma_nu_A_sigma</a>   </p>
+<p><a href="plot.html?diagram=Z&amp;data=CW_sigma_nu_A_sigma__CW_nu_A_sigma">CW_sigma_nu_A_sigma__CW_nu_A_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_sigma_nu_A_sigma__CW_sigma_nu">CW_sigma_nu_A_sigma__CW_sigma_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_sigma_nu_A_sigma__Q_CW_nu_sigma_nu_Eq_sigma_sigma">CW_sigma_nu_A_sigma__Q_CW_nu_sigma_nu_Eq_sigma_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_sigma_nu__CW_sigma_nu_eta">CW_sigma_nu__CW_sigma_nu_eta</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_sigma_nu__Cnu">CW_sigma_nu__Cnu</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_sigma_nu__Q_CW_nu_sigma_nu_Eq_sigma_sigma">CW_sigma_nu__Q_CW_nu_sigma_nu_Eq_sigma_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_sigma_nu_eta_2__CW_nu_eta_2">CW_sigma_nu_eta_2__CW_nu_eta_2</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_sigma_nu_eta_2__CW_sigma_nu_eta_2_etasigma">CW_sigma_nu_eta_2__CW_sigma_nu_eta_2_etasigma</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_sigma_nu_eta__CW_nu_eta">CW_sigma_nu_eta__CW_nu_eta</a>   
+<a href="plot.html?diagram=Z&amp;data=CW_sigma_nu_eta__CW_sigma_nu_eta_2">CW_sigma_nu_eta__CW_sigma_nu_eta_2</a>   
+<a href="plot.html?diagram=Z&amp;data=Ceta_Cnu__CW_eta_A_nu">Ceta_Cnu__CW_eta_A_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=Ceta_Csigma__CW_eta_A_sigma">Ceta_Csigma__CW_eta_A_sigma</a>   </p>
+<p><a href="plot.html?diagram=Z&amp;data=Ceta__CW_2_V_eta">Ceta__CW_2_V_eta</a>   
+<a href="plot.html?diagram=Z&amp;data=Ceta__CW_2_theta5_2_Eq_eta_theta5">Ceta__CW_2_theta5_2_Eq_eta_theta5</a>   
+<a href="plot.html?diagram=Z&amp;data=Ceta__CW_eta_2">Ceta__CW_eta_2</a>   
+<a href="plot.html?diagram=Z&amp;data=Ceta__CW_eta_V_nu">Ceta__CW_eta_V_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=Ceta__CW_eta_V_sigma">Ceta__CW_eta_V_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=Ceta__CW_eta_nu">Ceta__CW_eta_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=Ceta__Q_CW_2_A_eta">Ceta__Q_CW_2_A_eta</a>   
+<a href="plot.html?diagram=Z&amp;data=Ceta__Q_CW_eta_2_eta_Eq_2_nu">Ceta__Q_CW_eta_2_eta_Eq_2_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=Ceta__Q_CW_eta_2_eta_Eq_nu_2">Ceta__Q_CW_eta_2_eta_Eq_nu_2</a>   
+<a href="plot.html?diagram=Z&amp;data=Ceta__Q_CW_eta_A_nu">Ceta__Q_CW_eta_A_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=Ceta__Q_CW_eta_nu_eta_Eq_nu_nu">Ceta__Q_CW_eta_nu_eta_Eq_nu_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=Ceta__Q_Joker">Ceta__Q_Joker</a>   
+<a href="plot.html?diagram=Z&amp;data=Ceta__S0">Ceta__S0</a>   </p>
+<p><a href="plot.html?diagram=Z&amp;data=Cnu_Csigma__CW_nu_A_sigma">Cnu_Csigma__CW_nu_A_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=Cnu__CW_2_V_nu">Cnu__CW_2_V_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=Cnu__CW_eta_2_eta_Eq_nu_2">Cnu__CW_eta_2_eta_Eq_nu_2</a>   
+<a href="plot.html?diagram=Z&amp;data=Cnu__CW_eta_V_nu">Cnu__CW_eta_V_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=Cnu__CW_nu_V_sigma">Cnu__CW_nu_V_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=Cnu__CW_nu_eta">Cnu__CW_nu_eta</a>   
+<a href="plot.html?diagram=Z&amp;data=Cnu__CW_nu_sigma">Cnu__CW_nu_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=Cnu__Q_CW_eta_2_eta_Eq_2_nu">Cnu__Q_CW_eta_2_eta_Eq_2_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=Cnu__Q_CW_eta_A_nu">Cnu__Q_CW_eta_A_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=Cnu__Q_CW_eta_nu_eta_Eq_nu_nu">Cnu__Q_CW_eta_nu_eta_Eq_nu_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=Cnu__Q_CW_nu_A_sigma">Cnu__Q_CW_nu_A_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=Cnu__Q_CW_nu_sigma_nu_Eq_sigma_sigma">Cnu__Q_CW_nu_sigma_nu_Eq_sigma_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=Cnu__S0">Cnu__S0</a>   </p>
+<p><a href="plot.html?diagram=Z&amp;data=Csigma__CW_2_V_sigma">Csigma__CW_2_V_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=Csigma__CW_2_eta_by_nu">Csigma__CW_2_eta_by_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=Csigma__CW_eta_V_sigma">Csigma__CW_eta_V_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=Csigma__CW_nu_V_sigma">Csigma__CW_nu_V_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=Csigma__CW_sigma_nu">Csigma__CW_sigma_nu</a>   
+<a href="plot.html?diagram=Z&amp;data=Csigma__Q_CW_nu_A_sigma">Csigma__Q_CW_nu_A_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=Csigma__Q_CW_nu_sigma_nu_Eq_sigma_sigma">Csigma__Q_CW_nu_sigma_nu_Eq_sigma_sigma</a>   
+<a href="plot.html?diagram=Z&amp;data=Csigma__S0">Csigma__S0</a>   </p>
+<p><a href="plot.html?diagram=Z&amp;data=DC2h4__C2">DC2h4__C2</a>   
+<a href="plot.html?diagram=Z&amp;data=DC2h5__C2">DC2h5__C2</a>   
+<a href="plot.html?diagram=Z&amp;data=DC2h6__C2">DC2h6__C2</a>   
+<a href="plot.html?diagram=Z&amp;data=DC2h6__Q_CW_2_theta5_2_Eq_eta_theta5">DC2h6__Q_CW_2_theta5_2_Eq_eta_theta5</a>   </p>
+<p><a href="plot.html?diagram=Z&amp;data=Joker__CW_eta_2_A_eta">Joker__CW_eta_2_A_eta</a>   
+<a href="plot.html?diagram=Z&amp;data=RP1_10__RP1_11">RP1_10__RP1_11</a>   
+<a href="plot.html?diagram=Z&amp;data=RP1_11__RP1_12">RP1_11__RP1_12</a>   
+<a href="plot.html?diagram=Z&amp;data=RP1_4__RP1_5">RP1_4__RP1_5</a>   
+<a href="plot.html?diagram=Z&amp;data=RP1_5__RP1_6">RP1_5__RP1_6</a>   
+<a href="plot.html?diagram=Z&amp;data=RP1_6__CW_2_eta">RP1_6__CW_2_eta</a>   
+<a href="plot.html?diagram=Z&amp;data=RP1_6__RP1_8">RP1_6__RP1_8</a>   
+<a href="plot.html?diagram=Z&amp;data=RP1_8__RP1_9">RP1_8__RP1_9</a>   
+<a href="plot.html?diagram=Z&amp;data=RP1_9__RP1_10">RP1_9__RP1_10</a>   
+<a href="plot.html?diagram=Z&amp;data=RP3_256__RP1_2">RP3_256__RP1_2</a>   
+<a href="plot.html?diagram=Z&amp;data=RP3_256__RP4_256">RP3_256__RP4_256</a>   
+<a href="plot.html?diagram=Z&amp;data=RP4_256__RP5_256">RP4_256__RP5_256</a>   
+<a href="plot.html?diagram=Z&amp;data=RP5_256__RP1_4">RP5_256__RP1_4</a>   </p>
+
+</body>

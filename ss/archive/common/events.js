@@ -15,9 +15,9 @@ const p_button_rename_style = document.getElementById("p_button_rename").style;
 const pointerCache = new Array();
 var prevPtsDist = null;
 var prevPt = null;
+var prevPinchScale = null;
 
 /* other globals */
-const arr_factors = [1, 3, 7, 15, 23, 29, 33, 42];
 var timerClearCache = null;
 
 function getDistPts() {
@@ -120,7 +120,7 @@ function on_pointerup(event) {
 			div_binfo_style.visibility = "visible";
 
 			const bullet = document.getElementById(tgt.dataset.id); /* The actualy bullet behind what is clicked */
-			p_deg.innerHTML = `Deg: (${Math.round(bullet.getAttribute("cx"))},${Math.round(bullet.getAttribute("cy"))})`;
+			p_deg.innerHTML = `Deg: (${getAxisNumber(Math.round(bullet.getAttribute("cx")))},${Math.round(bullet.getAttribute("cy"))})`;
 			p_base.innerHTML = `Base: ${bullet.dataset.b}`;
 			const str_base = strLable(tgt.dataset.id);
 			const tex_base = katex.renderToString(str_base, { throwOnError: false });
@@ -128,8 +128,8 @@ function on_pointerup(event) {
 
 			const level = parseInt(bullet.dataset.l);
 			if (level === 5000) { p_diff.innerHTML = `Permanant`; }
-			else if (level === 9800) { p_diff.innerHTML = `Permanant`; }
-			else if (level > 9800) {
+			else if (level === 10000 - config.R_PERM) { p_diff.innerHTML = `Permanant`; }
+			else if (level > 10000 - config.R_PERM) {
 				const r = 10000 - level;
 				let str_diff = `d_{${r}}(\\mathrm{this})=(${bullet.dataset.d})`;
 				str_diff = str_diff.replace('None', '?');
@@ -156,19 +156,18 @@ function on_pointerup(event) {
 }
 
 function on_wheel(event) {
-	// TODO: make the zoom rate smaller for the Macbook trackpad
-	if (event.deltaY < 0) {
-		let pivotScreen = new Vector(event.offsetX, event.offsetY);
-		let pivotSvg = camera.flip(pivotScreen);
-		camera.zoom(pivotSvg, config.camera_zoom_rate);
-		g_plot.setAttribute("transform", camera.getTransform());
-	} else {
-		let pivotScreen = new Vector(event.offsetX, event.offsetY);
-		let pivotSvg = camera.flip(pivotScreen);
-		camera.zoom(pivotSvg, 1 / config.camera_zoom_rate);
-		g_plot.setAttribute("transform", camera.getTransform());
-	}
-	plotAxisLabels();
+	let pivotScreen = new Vector(event.offsetX, event.offsetY);
+	let pivotSvg = camera.flip(pivotScreen);
+	camera.zoom(pivotSvg, event.deltaY < 0 ? config.camera_zoom_rate : 1 / config.camera_zoom_rate);
+}
+
+/* For macbook trackpad pinch gesture */
+function on_pinch(event) {
+	let pivotScreen = new Vector(event.clientX, event.clientY);
+	let pivotSvg = camera.flip(pivotScreen);
+	camera.zoom(pivotSvg, event.scale / prevPinchScale);
+	prevPinchScale = event.scale;
+	event.preventDefault();
 }
 
 function select_bullet(bullet) {
@@ -189,8 +188,18 @@ function select_bullet(bullet) {
 		rect_prod.setAttribute("y", Math.round(bullet.getAttribute("cy")) + Math.round(rect_prod.dataset.y) - 0.5);
 
 		const id1 = i, id2 = id_selected;
-		if (basis_prod[id1 + "," + id2]) {
-			for (const index of basis_prod[id1 + "," + id2]) {
+		let bp;
+		if (MODE == "Pi" || MODE == "DualPi") {
+			const O = basis_prod[id1 + "," + id2] ? basis_prod[id1 + "," + id2][1] : 300;
+			rect_prod.setAttribute("height", O - Math.round(rect_prod.getAttribute("y")));
+			if (basis_prod[id1 + "," + id2])
+				bp = basis_prod[id1 + "," + id2][0];
+		}
+		else
+			bp = basis_prod[id1 + "," + id2];
+
+		if (bp) {
+			for (const index of bp) {
 				const id = "b" + index;
 				const bullet = document.getElementById(id);
 				circle_prod = `<circle cx="${bullet.getAttribute("cx")}" cy="${bullet.getAttribute("cy")}" r="${Number(bullet.getAttribute("r")) * 1.7}"></circle>`;
@@ -201,35 +210,59 @@ function select_bullet(bullet) {
 }
 
 function on_key_down(event) {
-	if (typeof MODE !== 'undefined' && MODE == "DualSS") {
-		console.log(event.which)
+	//console.log(event.which)
+	if (event.which === 39) { /* Right */
+		camera.translate(new Vector(-config.camera_translate_pixels, 0));
+	}
+	else if (event.which === 37) { /* Left */
+		camera.translate(new Vector(config.camera_translate_pixels, 0));
+	}
+	else if (event.which === 38) { /* Up */
+		camera.translate(new Vector(0, -config.camera_translate_pixels));
+	}
+	else if (event.which === 40) { /* Down */
+		camera.translate(new Vector(0, config.camera_translate_pixels));
+	}
+	else if (event.which === 189) { /* - */
+		const pivotSvg = new Vector(window.innerWidth / 2, window.innerHeight / 2);
+		camera.zoom(pivotSvg, 1 / config.camera_zoom_rate);
+	}
+	else if (event.which === 187) { /* = */
+		const pivotSvg = new Vector(window.innerWidth / 2, window.innerHeight / 2);
+		camera.zoom(pivotSvg, config.camera_zoom_rate);
+	}
+	if (MODE == "DualPi") {
 		if (event.which === 39) { // Right arrow
-			sep_right += 1;
+			SEP_RIGHT += 1;
 			AdjustVisibilityBySeparator();
+			plotAxisLabels();
 		}
 		else if (event.which === 37) { // Left arrow
-			sep_right -= 1;
+			SEP_RIGHT -= 1;
 			AdjustVisibilityBySeparator();
+			plotAxisLabels();
 		}
 		else if (event.which === 38) { // Up arrow
-			if(sep_width === 1) {
-				sep_right += 1;
-				sep_width = sep_max_width;
+			if (SEP_WIDTH === 1) {
+				SEP_RIGHT += 1;
+				SEP_WIDTH = SEP_MAX_WIDTH;
 			}
 			else {
-				sep_width = 1;
+				SEP_WIDTH = 1;
 			}
 			AdjustVisibilityBySeparator();
+			plotAxisLabels();
 		}
 		else if (event.which === 40) { // Down arrow
-			if(sep_width === 1) {
-				sep_width = sep_max_width;
+			if (SEP_WIDTH === 1) {
+				SEP_WIDTH = SEP_MAX_WIDTH;
 			}
 			else {
-				sep_right -= 1;
-				sep_width = 1;
+				SEP_RIGHT -= 1;
+				SEP_WIDTH = 1;
 			}
 			AdjustVisibilityBySeparator();
+			plotAxisLabels();
 		}
 	}
 }
@@ -281,7 +314,7 @@ function on_rename() {
 	let str_mon = strMon(mon);
 	var tex_mon = katex.renderToString(str_mon, { throwOnError: false });
 	p_latex.innerHTML = `LaTeX: ${tex_mon}`;
-	plotBulletLabels();
+	addBulletLabels();
 }
 
 function on_copy_aliases() {
@@ -290,6 +323,14 @@ function on_copy_aliases() {
 	navigator.clipboard.writeText(text);
 	alert("Copied and you can send it to me");
 }
+
+// function on_save_svg() {
+// 	svgExport.downloadPdf(
+// 		document.getElementById("svg_ss"),
+// 		"ss",
+// 		{}
+// 	);
+// }
 
 function on_click_about() {
 	alert("Author: Weinan Lin");
@@ -300,7 +341,7 @@ function AdjustVisibilityByMenu() {
 	for (const b of bullets) {
 		if (b.dataset.page >= config_dynamic.page) {
 			b.style.visibility = "visible";
-			if (b.dataset.page === "200" && b.dataset.d !== "None" && b.dataset.l > 10000 - config_dynamic.page) {
+			if (b.dataset.page == config.R_PERM && b.dataset.d !== "None" && b.dataset.l > 10000 - config_dynamic.page) {
 				b.setAttribute("opacity", "0.6");
 			} else {
 				b.setAttribute("opacity", "1");
@@ -406,7 +447,7 @@ function on_select_page(event) {
 			break;
 
 		case "Einf":
-			config_dynamic.page = 200;
+			config_dynamic.page = config.R_PERM;
 			break;
 
 		default:
@@ -450,6 +491,13 @@ function initHandlers() {
 
 	svg_ss.addEventListener("contextmenu", on_contextmenu);
 	document.addEventListener("keydown", on_key_down);
+
+	/* For macbook */
+	if (navigator.userAgent.match("Macintosh")) {
+		window.addEventListener("gesturestart", event => {prevPinchScale = 1.0; event.preventDefault();});
+		window.addEventListener("gesturechange", on_pinch);
+		window.addEventListener("gestureend", event => event.preventDefault());
+	}
 
 	/* Desktop browser will support pointer enter and leave events */
 	if (navigator.userAgent.match("Windows") || navigator.userAgent.match("Macintosh")) {
